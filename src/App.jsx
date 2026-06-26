@@ -22,15 +22,16 @@ import CreateBranch from "./pages/CreateBranch/CreateBranch";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import { AppLayout, WebLayout } from "./components/Layouts/Layouts";
 import AddStaff from "./pages/AddStaff/AddStaff";
+import NavigationHandler from "./functions/NavigationHandler";
 
 
 
 function App() {
 	return (
 		<BrowserRouter>
+			<NavigationHandler />
 			<Routes>
 				<Route path="/">
-					
 					<Route path="/" element={<WebLayout />}>
 						<Route index element={<Navigate to="web" replace />} />
 						<Route path="web" element={<LandingPage />} />
@@ -59,27 +60,5 @@ function App() {
 		</BrowserRouter>
 	);
 }
-
-{/* 
-	<Route index element={<Navigate to="dashboard" replace />} />
-	<Route path="dashboard" element={<Dashboard />} />
-	<Route path="members" element={<Members />} />
-	<Route path="payments" element={<PaymentList />} />
-	<Route path="branchs" element={<BranchManagement />} />
-	<Route path="settings" element={<Settings />} />
-
-	<Route path="dashboard" element={<MemberDetails />} />
-	<Route path="members" element={<StaffManagement />} />
-	<Route path="payments" element={<RegisterBranch />} />
-	<Route path="branchs" element={<PlansManagement />} />
-	<Route path="settings" element={<PaymentRecord />} /> 
-
-
-	<Route path="/login" element={<Login />} />
-	<Route path="/forgot-password" element={<ForgotPassword />} />
-	<Route path="/landing-page" element={<LandingPage />} />
-	
-*/}
-
 
 export default App;
