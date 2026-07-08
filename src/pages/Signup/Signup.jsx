@@ -3,25 +3,27 @@ import { signup } from "../../config/api";
 import NavigateTo from "../../functions/NavigateTo";
 import styles from "./Signup.module.css";
 import InputField from "../../components/InputField/InputField";
+import GlassCard from "../../components/GlassCard/GlassCard";
+import { signUpValidation } from "../../functions/validation";
 
 export default function Signup() {
 	const [form, setForm] = useState({ ownerName: "", phone: "", email: "", password: "", confirmPassword: "" });
-	const [showPassword, setShowPassword] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [error, setError] = useState({ ownerName: "", phone: "", email: "", password: "", confirmPassword: "" });
 	const [loading, setLoading] = useState(false);
-
-	const handleChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
-
-	const handleSubmit = async () => {
-		if (form.password !== form.confirmPassword) return alert("Passwords do not match");
+	const handleChange = e => {
+		setForm(p => ({ ...p, [e.target.name]: e.target.value }));
+	};
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const validationError = signUpValidation({ form, setError });
+		if (validationError) return;
 		try {
 			setLoading(true);
 			await signup(form);
 		} catch (err) { console.error(err); }
 		finally { setLoading(false); }
 	};
-
-
+	console.log(error);
 	return (
 		<div className={styles.Rb__container}>
 			<main className={styles.Rb__main}>
@@ -32,38 +34,20 @@ export default function Signup() {
 					<h2>Welcome To Gymify</h2>
 					<p>Expand your fitness empire</p>
 				</section>
-
 				<div className={styles.Rb__form}>
-					<section className={styles.Rb__card}>
-						<InputField type="text" label={"Owner Name"} placeholder={"Full Name"} handleChange={handleChange} name={"ownerName"} />
-						<InputField type="number" label={"Phone"} placeholder={"+1 (555"} handleChange={handleChange} name={"phone"} />
-						<InputField type="email" label={"Email"} placeholder={"gymmanager@gmail.com"} handleChange={handleChange} name={"email"} />
-					</section>
-
-					<section className={styles.Rb__card}>
-						<div className={styles.Rb__field}>
-							<label>Password</label>
-							<div className={styles.Rb__passwordWrapper}>
-								<input type={showPassword ? "text" : "password"} name="password" value={form.password} onChange={handleChange} />
-								<span className="material-symbols-outlined" onClick={() => setShowPassword(!showPassword)}>{showPassword ? "visibility_off" : "visibility"}</span>
-							</div>
-						</div>
-
-						<div className={styles.Rb__field}>
-							<label>Confirm Password</label>
-							<div className={styles.Rb__passwordWrapper}>
-								<input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" value={form.confirmPassword} onChange={handleChange} />
-								<span className="material-symbols-outlined" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>{showConfirmPassword ? "visibility_off" : "visibility"}</span>
-							</div>
-						</div>
-					</section>
-
+					<GlassCard >
+						<InputField type="text" label={"Owner Name"} placeholder={"Full Name"} handleChange={handleChange} name={"ownerName"} handleChange={handleChange} error={error}  />
+						<InputField type="number" label={"Phone"} placeholder={"+1 555 555 5555"} handleChange={handleChange} name={"phone"} handleChange={handleChange} error={error}/>
+						<InputField type="email" label={"Email"} placeholder={"gymmanager@gmail.com"} handleChange={handleChange} name={"email"} handleChange={handleChange} error={error}/>
+					</GlassCard>
+					<GlassCard>
+						<InputField type="password" label={"Password"} placeholder={"@Gym1234"} handleChange={handleChange} name={"password"} handleChange={handleChange} error={error}/>
+						<InputField type="password" label={"Confirm Password"} placeholder={"@Gym1234"} handleChange={handleChange} name={"confirmPassword"} handleChange={handleChange} error={error}/>
+					</GlassCard>
 					<button className={styles.Rb__submitButton} disabled={loading} onClick={handleSubmit}>{loading ? "Creating..." : "Create Account"}</button>
 				</div>
-
 				<div className={styles.Rb__loginSection}><p>Already have an account?<span onClick={() => NavigateTo("/login")}>Login</span></p></div>
 			</main>
-
 			<footer className={styles.Rb__footer}><p>By registering, you agree to our Terms of Service and Privacy Policy.</p></footer>
 		</div>
 	);

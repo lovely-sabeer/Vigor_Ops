@@ -17,3 +17,19 @@
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(244, 196, 48, 0.15);
 }
+.Rb__passwordWrapper {
+	position: relative;
+}
+
+.Rb__passwordWrapper span {
+	position: absolute;
+	right: 16px;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+.Rb__error{
+	color: red;
+	font-size: 12px;
+	margin-top: 4px;
+}

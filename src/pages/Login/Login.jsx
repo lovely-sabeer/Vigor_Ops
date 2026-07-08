@@ -2,16 +2,21 @@ import { useState } from "react";
 import { login } from "../../config/api";
 import NavigateTo from "../../functions/NavigateTo";
 import styles from "./Login.module.css";
+import GlassCard from "../../components/GlassCard/GlassCard";
+import InputField from "../../components/InputField/InputField";
+import { loginValidation } from "../../functions/validation";
 
 export default function Login() {
 	const [form, setForm] = useState({ email: "", password: "" });
-	const [showPassword, setShowPassword] = useState(false);
+	const [error, setError] = useState({ email: "", password: "" });
 	const [loading, setLoading] = useState(false);
-
-	const handleChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
-
-	const handleLogin = async (e) => {
+	const handleChange = e => {
+		setForm(p => ({ ...p, [e.target.name]: e.target.value }));
+	};
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		const validationError = loginValidation({ form, setError });
+		if (validationError) return;
 		try {
 			setLoading(true);
 			const res = await login(form);
@@ -29,30 +34,13 @@ export default function Login() {
 					<h1>GymManager</h1>
 					<p>ADMINISTRATION PORTAL</p>
 				</section>
-
-				<section className={styles.Lg__card}>
-					<form className={styles.Lg__form} onSubmit={handleLogin}>
-						<div className={styles.Lg__field}>
-							<label>Email Id</label>
-							<div className={styles.Lg__inputWrapper}>
-								<span className="material-symbols-outlined">mail</span>
-								<input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Enter Email" />
-							</div>
-						</div>
-
-						<div className={styles.Lg__field}>
-							<label>Password</label>
-							<div className={styles.Lg__inputWrapper}>
-								<span className="material-symbols-outlined">lock</span>
-								<input type={showPassword ? "text" : "password"} name="password" value={form.password} onChange={handleChange} placeholder="Enter Password" />
-								<i className={`material-symbols-outlined ${styles.Lg__eye}`} onClick={() => setShowPassword(!showPassword)}>{showPassword ? "visibility_off" : "visibility"}</i>
-							</div>
-							<div className={styles.Lg__forgotWrapper}><a onClick={() => NavigateTo("/forgot-password")}>Forgot Password?</a></div>
-						</div>
-
-						<button type="submit" className={styles.Lg__loginButton} disabled={loading}>{loading ? "Logging In..." : "Login"}</button>
-					</form>
-				</section>
+				<form className={styles.Lg__form} onSubmit={handleSubmit}>
+					<GlassCard>
+						<InputField type="email" label={"Email"} placeholder={"gymmanager@gmail.com"} handleChange={handleChange} name={"email"} handleChange={handleChange} error={error}/>
+						<InputField type="password" label={"Password"} placeholder={"@Gym1234"} handleChange={handleChange} name={"password"} handleChange={handleChange} error={error}/>
+					</GlassCard>
+					<button type="submit" className={styles.Lg__loginButton} disabled={loading}>{loading ? "Logging In..." : "Login"}</button>
+				</form>
 
 				<section className={styles.Lg__registerSection}>
 					<p>Don't have an account?<span onClick={() => NavigateTo("/signup")}>Register</span></p>

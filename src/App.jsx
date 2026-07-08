@@ -44,7 +44,7 @@ function App() {
 						<Route path="dashboard" element={<Dashboard />} />
 						<Route path="members" element={<Members />} />
 						<Route path="member-details" element={<MemberDetails />} />
-						<Route path="add-member" element={<AddMember />} />
+						<Route path="add-member" element={<AddMember />} /> 
 						<Route path="payments" element={<PaymentList />} />
 						<Route path="branchs" element={<BranchManagement />} />
 						<Route path="create-branch" element={<CreateBranch />} />
