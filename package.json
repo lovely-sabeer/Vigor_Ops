@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
+    "@vercel/analytics": "^2.0.1",
     "apexcharts": "^5.10.6",
     "cls": "^0.1.5",
     "framer-motion": "^12.40.0",

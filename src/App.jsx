@@ -23,12 +23,14 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import { AppLayout, WebLayout } from "./components/Layouts/Layouts";
 import AddStaff from "./pages/AddStaff/AddStaff";
 import NavigationHandler from "./functions/NavigationHandler";
+import { Analytics } from '@vercel/analytics/react';
 
 
 
 function App() {
 	return (
 		<BrowserRouter>
+			<Analytics />
 			<NavigationHandler />
 			<Routes>
 				<Route path="/">
